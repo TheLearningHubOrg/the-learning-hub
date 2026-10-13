@@ -50,7 +50,11 @@ export function classifyCategory(
     text.includes('langfuse') ||
     text.includes('promptfoo') ||
     text.includes('vllm') ||
-    text.includes('mcp')
+    text.includes('mcp') ||
+    text.includes('langchain') ||
+    text.includes('llamaindex') ||
+    text.includes('huggingface') ||
+    text.includes('fine-tuning')
   ) {
     return 'ai';
   }
@@ -65,7 +69,8 @@ export function classifyCategory(
     text.includes('oauth') ||
     text.includes('websocket') ||
     text.includes('grpc') ||
-    text.includes('rest-api')
+    text.includes('rest-api') ||
+    text.includes('networking')
   ) {
     return 'testing-security';
   }
@@ -81,7 +86,13 @@ export function classifyCategory(
     text.includes('aws') ||
     text.includes('linux') ||
     text.includes('container') ||
-    text.includes('ci/cd')
+    text.includes('ci/cd') ||
+    text.includes('helm') ||
+    text.includes('argocd') ||
+    text.includes('prometheus') ||
+    text.includes('grafana') ||
+    text.includes('nginx') ||
+    text.includes('cloudflare')
   ) {
     return 'devops';
   }
@@ -97,7 +108,12 @@ export function classifyCategory(
     text.includes('sql') ||
     text.includes('prisma') ||
     text.includes('drizzle') ||
-    text.includes('database')
+    text.includes('database') ||
+    text.includes('sqlite') ||
+    text.includes('duckdb') ||
+    text.includes('clickhouse') ||
+    text.includes('elasticsearch') ||
+    text.includes('neo4j')
   ) {
     return 'databases';
   }
@@ -108,7 +124,9 @@ export function classifyCategory(
     text.includes('design-patterns') ||
     text.includes('data-structures') ||
     text.includes('algorithm') ||
-    text.includes('distributed')
+    text.includes('distributed') ||
+    text.includes('operating-systems') ||
+    text.includes('database-internals')
   ) {
     return 'system-design';
   }
@@ -124,6 +142,10 @@ export function classifyCategory(
     text.includes('csharp') ||
     text.includes('c-sharp') ||
     text.includes('typescript') ||
+    text.includes('java') ||
+    text.includes('kotlin') ||
+    text.includes('swift') ||
+    text.includes('zig') ||
     name === 'learn-c'
   ) {
     return 'languages';
@@ -145,6 +167,9 @@ export function classifyCategory(
     text.includes('bootstrap') ||
     text.includes('rxjs') ||
     text.includes('ngrx') ||
+    text.includes('flutter') ||
+    text.includes('solidjs') ||
+    text.includes('vite') ||
     text.includes('frontend')
   ) {
     return 'frontend';
@@ -236,7 +261,36 @@ export function formatTitle(name: string): string {
     'bootstrap': 'Bootstrap 5 Responsive Layouts',
     'fastapi': 'FastAPI & Async Microservices',
     'svelte': 'Svelte 5 Runes & Fullstack SvelteKit',
-    'react-native': 'React Native, Expo & Mobile Architecture'
+    'react-native': 'React Native, Expo & Mobile Architecture',
+    'sqlite': 'SQLite, LibSQL & Turso Embedded Architecture',
+    'duckdb': 'DuckDB In-Process OLAP & Analytical SQL',
+    'clickhouse': 'ClickHouse Real-Time Columnar Database',
+    'elasticsearch': 'Elasticsearch & OpenSearch Architecture',
+    'neo4j': 'Neo4j Graph Database & Cypher Modeling',
+    'langchain': 'LangChain Multi-Model Agent Orchestration',
+    'llamaindex': 'LlamaIndex Data Framework & Advanced RAG',
+    'huggingface': 'Hugging Face Transformers & Open Models',
+    'fine-tuning': 'LLM Fine-Tuning, LoRA & Unsloth',
+    'helm': 'Helm Kubernetes Package Manager & Charts',
+    'argocd': 'ArgoCD & GitOps Continuous Delivery',
+    'prometheus': 'Prometheus Monitoring & PromQL Mastery',
+    'grafana': 'Grafana SRE Dashboards & Observability',
+    'nginx': 'NGINX Reverse Proxy & High-Availability Engine',
+    'cloudflare': 'Cloudflare Workers, Pages & Edge Architecture',
+    'spring-boot': 'Spring Boot 3 & Enterprise Java Microservices',
+    'hono': 'Hono Edge Web Framework & Runtimes',
+    'trpc': 'tRPC End-to-End Type Safety & APIs',
+    'rabbitmq': 'RabbitMQ & AMQP Distributed Messaging',
+    'flutter': 'Flutter & Dart Cross-Platform Mobile Engine',
+    'solidjs': 'SolidJS Fine-Grained Reactivity & Signals',
+    'vite': 'Vite, Rollup & Rolldown Frontend Tooling',
+    'java': 'Modern Java 21+ & Virtual Threads Runtime',
+    'kotlin': 'Kotlin Coroutines & Multiplatform Architecture',
+    'swift': 'Swift 6 & Structured Concurrency Architecture',
+    'zig': 'Zig Systems Programming & Comptime Architecture',
+    'networking': 'Computer Networking, Protocols & Sockets',
+    'operating-systems': 'Operating Systems Primitives & Kernel Internals',
+    'database-internals': 'Database Storage Engines, Indexes & Distributed ACID'
   };
 
   if (acronymMap[clean]) {
