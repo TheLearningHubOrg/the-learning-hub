@@ -135,6 +135,7 @@ export function classifyCategory(
     text.includes('angular') ||
     text.includes('next') ||
     text.includes('vue') ||
+    text.includes('svelte') ||
     text.includes('astro') ||
     text.includes('html') ||
     text.includes('css') ||
@@ -233,7 +234,8 @@ export function formatTitle(name: string): string {
     'scss': 'Modern SCSS & Design Systems',
     'tailwindcss': 'Tailwind CSS Utility Architecture',
     'bootstrap': 'Bootstrap 5 Responsive Layouts',
-    'fastapi': 'FastAPI & Async Microservices'
+    'fastapi': 'FastAPI & Async Microservices',
+    'svelte': 'Svelte 5 Runes & Fullstack SvelteKit'
   };
 
   if (acronymMap[clean]) {
