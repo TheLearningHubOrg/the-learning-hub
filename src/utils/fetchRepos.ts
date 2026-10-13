@@ -2,7 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { LearningRepo, CategoryId, RepoStatus } from '../types/repo';
 
-const GITHUB_USER = 'manthanank';
+const GITHUB_SOURCES = [
+  'users/manthanank/repos',
+  'orgs/TheLearningHubOrg/repos'
+];
 
 interface GitHubRawRepo {
   name: string;
@@ -224,6 +227,8 @@ export function formatTitle(name: string): string {
     'oauth': 'OAuth 2.1 & OpenID Connect',
     'rxjs': 'RxJS Reactive Streams',
     'ngrx': 'NgRx State Management',
+    'nestjs': 'NestJS Enterprise Microservices',
+    'scss': 'Modern SCSS & Design Systems',
     'tailwindcss': 'Tailwind CSS Utility Architecture',
     'bootstrap': 'Bootstrap 5 Responsive Layouts'
   };
@@ -368,59 +373,61 @@ export function determineStatus(repoName: string, remoteSizeKb: number, remoteDe
 export async function fetchRepos(): Promise<LearningRepo[]> {
   const repoMap = new Map<string, LearningRepo>();
 
-  // 1. Fetch from GitHub API across all repository pages
-  try {
-    let page = 1;
-    let keepPaging = true;
+  // 1. Fetch from GitHub API across all repository pages and sources
+  for (const source of GITHUB_SOURCES) {
+    try {
+      let page = 1;
+      let keepPaging = true;
 
-    while (page <= 5 && keepPaging) {
-      const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&page=${page}&sort=updated`, {
-        headers: {
-          'User-Agent': 'the-learninghub-dynamic-fetcher',
-          Accept: 'application/vnd.github.v3+json'
+      while (page <= 5 && keepPaging) {
+        const res = await fetch(`https://api.github.com/${source}?per_page=100&page=${page}&sort=updated`, {
+          headers: {
+            'User-Agent': 'the-learninghub-dynamic-fetcher',
+            Accept: 'application/vnd.github.v3+json'
+          }
+        });
+
+        if (!res.ok) break;
+
+        const data: GitHubRawRepo[] = await res.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          keepPaging = false;
+          break;
         }
-      });
 
-      if (!res.ok) break;
+        for (const r of data) {
+          if (!r.fork && !r.archived && (r.name.startsWith('learn-') || r.topics?.includes('learning'))) {
+            const topics = r.topics || [];
+            const category = classifyCategory(r.name, topics, r.language || '', r.description || '');
+            const level = determineLevel(r.name, topics);
+            const title = formatTitle(r.name);
+            const tags = buildTags(r.name, topics, r.language);
+            const { status, guideLines } = determineStatus(r.name, r.size || 0, r.description || '');
 
-      const data: GitHubRawRepo[] = await res.json();
-      if (!Array.isArray(data) || data.length === 0) {
-        keepPaging = false;
-        break;
-      }
-
-      for (const r of data) {
-        if (!r.fork && !r.archived && (r.name.startsWith('learn-') || r.topics?.includes('learning'))) {
-          const topics = r.topics || [];
-          const category = classifyCategory(r.name, topics, r.language || '', r.description || '');
-          const level = determineLevel(r.name, topics);
-          const title = formatTitle(r.name);
-          const tags = buildTags(r.name, topics, r.language);
-          const { status, guideLines } = determineStatus(r.name, r.size || 0, r.description || '');
-
-          repoMap.set(r.name, {
-            name: r.name,
-            title: title,
-            description: r.description || `Comprehensive guide, patterns, and practical code references for ${title}.`,
-            category: category,
-            tags: tags,
-            githubUrl: r.html_url,
-            level: level,
-            status: status,
-            guideLines: guideLines > 0 ? guideLines : undefined,
-            stars: r.stargazers_count,
-            forks: r.forks_count,
-            language: r.language,
-            updatedAt: r.updated_at,
-            isFeatured: status === 'Completed' || r.stargazers_count > 0
-          });
+            repoMap.set(r.name, {
+              name: r.name,
+              title: title,
+              description: r.description || `Comprehensive guide, patterns, and practical code references for ${title}.`,
+              category: category,
+              tags: tags,
+              githubUrl: r.html_url,
+              level: level,
+              status: status,
+              guideLines: guideLines > 0 ? guideLines : undefined,
+              stars: r.stargazers_count,
+              forks: r.forks_count,
+              language: r.language,
+              updatedAt: r.updated_at,
+              isFeatured: status === 'Completed' || r.stargazers_count > 0
+            });
+          }
         }
-      }
 
-      page++;
+        page++;
+      }
+    } catch (error) {
+      console.warn(`[Dynamic Fetcher] GitHub API request failed or rate-limited for ${source}:`, error);
     }
-  } catch (error) {
-    console.warn('[Dynamic Fetcher] GitHub API request failed or rate-limited:', error);
   }
 
   // 2. Local File System Dynamic Discovery Fallback:
