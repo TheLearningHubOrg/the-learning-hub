@@ -49,7 +49,8 @@ export function classifyCategory(
     text.includes('autogen') ||
     text.includes('langfuse') ||
     text.includes('promptfoo') ||
-    text.includes('vllm')
+    text.includes('vllm') ||
+    text.includes('mcp')
   ) {
     return 'ai';
   }
@@ -217,6 +218,7 @@ export function formatTitle(name: string): string {
     'langfuse': 'Langfuse LLM Observability',
     'promptfoo': 'Promptfoo Automated Prompt Testing',
     'vllm': 'vLLM High-Throughput Serving',
+    'mcp': 'Model Context Protocol (MCP)',
     'playwright': 'Playwright End-to-End Testing',
     'vitest': 'Vitest Next-Gen Unit Testing',
     'cypress': 'Cypress Component & E2E Testing',
@@ -456,7 +458,7 @@ export async function fetchRepos(): Promise<LearningRepo[]> {
               description: `Comprehensive guide, patterns, and architectural code references for ${title}.`,
               category: category,
               tags: tags,
-              githubUrl: `https://github.com/${GITHUB_USER}/${repoName}`,
+              githubUrl: `https://github.com/TheLearningHubOrg/${repoName}`,
               level: level,
               status: status,
               guideLines: guideLines > 0 ? guideLines : undefined,
