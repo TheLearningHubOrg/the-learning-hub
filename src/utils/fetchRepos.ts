@@ -232,7 +232,8 @@ export function formatTitle(name: string): string {
     'nestjs': 'NestJS Enterprise Microservices',
     'scss': 'Modern SCSS & Design Systems',
     'tailwindcss': 'Tailwind CSS Utility Architecture',
-    'bootstrap': 'Bootstrap 5 Responsive Layouts'
+    'bootstrap': 'Bootstrap 5 Responsive Layouts',
+    'fastapi': 'FastAPI & Async Microservices'
   };
 
   if (acronymMap[clean]) {
