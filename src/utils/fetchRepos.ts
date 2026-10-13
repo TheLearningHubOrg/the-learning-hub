@@ -235,7 +235,8 @@ export function formatTitle(name: string): string {
     'tailwindcss': 'Tailwind CSS Utility Architecture',
     'bootstrap': 'Bootstrap 5 Responsive Layouts',
     'fastapi': 'FastAPI & Async Microservices',
-    'svelte': 'Svelte 5 Runes & Fullstack SvelteKit'
+    'svelte': 'Svelte 5 Runes & Fullstack SvelteKit',
+    'react-native': 'React Native, Expo & Mobile Architecture'
   };
 
   if (acronymMap[clean]) {
